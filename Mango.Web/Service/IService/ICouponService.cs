@@ -5,9 +5,9 @@ namespace Mango.Web.Service.IService;
 
 public interface ICouponService
 {
-    Task<Result> CreateCoupon(CouponRequest request, CancellationToken ct = default);
-    Task<Result> GetCouponById(int id, CancellationToken ct = default);
-    Task<Result> GetAllCoupons(CancellationToken ct = default);
-    Task<Result> UpdateCoupon(int id, CouponRequest request, CancellationToken ct = default);
-    Task<Result> DeleteCoupon(int id, CancellationToken ct = default);
+    Task<Result> CreateCouponAsync(CouponRequest request, CancellationToken ct = default);
+    Task<Result> UpdateCouponAsync(int id, CouponRequest request, CancellationToken ct = default);
+    Task<Result> DeleteCouponAsync(int id, CancellationToken ct = default);
+    Task<Result<CouponResponse>> GetCouponByIdAsync(int id, CancellationToken ct = default);
+    Task<Result<IEnumerable<CouponResponse>>> GetAllCouponsAsync(CancellationToken ct = default);
 }

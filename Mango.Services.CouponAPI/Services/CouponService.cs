@@ -45,6 +45,7 @@ public class CouponService(IUnitOfWork unitOfWork) : ICouponService
 
         existingCoupon.Code = coupon.Code;
         existingCoupon.DiscountAmount = coupon.DiscountAmount;
+        existingCoupon.MinAmount = coupon.MinAmount;
 
         unitOfWork.Coupon.Update(existingCoupon);
         await unitOfWork.CommitChangesAsync(ct);

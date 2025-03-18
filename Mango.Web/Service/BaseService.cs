@@ -74,6 +74,8 @@ public class BaseService<T>(IHttpClientFactory _httpClientFactory) : IBaseServic
 }
 
 
+
+
 //public class BaseService(IHttpClientFactory _httpClientFactory) : IBaseService
 //{
 //    public async Task<Result> SendAsync<T>(Request<T> request)

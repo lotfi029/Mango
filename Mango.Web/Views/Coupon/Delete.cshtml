@@ -1,0 +1,26 @@
+﻿@model CouponResponse
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-danger text-white">
+        <h1 class="mb-0">Delete Coupon</h1>
+    </div>
+    <div class="card-body">
+        <h4>Are you sure you want to delete this coupon?</h4>
+        <dl class="row">
+            <dt class="col-sm-3">Coupon Code</dt>
+            <dd class="col-sm-9">@Model.Code</dd>
+            <dt class="col-sm-3">Discount Amount</dt>
+            <dd class="col-sm-9">@Model.DiscountAmount.ToString("c")</dd>
+            <dt class="col-sm-3">Minimum Amount</dt>
+            <dd class="col-sm-9">@Model.MinAmount.ToString("c")</dd>
+        </dl>
+        <form asp-action="Delete" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="couponId" value="@Model.Id" />
+            <div class="text-end">
+                <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

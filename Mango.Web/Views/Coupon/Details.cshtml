@@ -1,0 +1,21 @@
+﻿@model CouponResponse
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-info text-white">
+        <h1 class="mb-0">Coupon Details</h1>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Coupon Code</dt>
+            <dd class="col-sm-9">@Model.Code</dd>
+            <dt class="col-sm-3">Discount Amount</dt>
+            <dd class="col-sm-9">@Model.DiscountAmount.ToString("c")</dd>
+            <dt class="col-sm-3">Minimum Amount</dt>
+            <dd class="col-sm-9">@Model.MinAmount.ToString("c")</dd>
+        </dl>
+        <div class="text-end">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary me-2">Edit</a>
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>
