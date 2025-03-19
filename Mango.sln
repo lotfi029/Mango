@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35828.75 d17.13
+VisualStudioVersion = 17.13.35828.75
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{FF7C740D-08AF-4C19-B825-73075C05C715}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mango.Web", "Mango.Web\Mango.Web.csproj", "{9B4AE021-235E-4187-A54C-268B802DE451}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mango.Services.AuthAPI", "Mango.Services.AuthAPI\Mango.Services.AuthAPI.csproj", "{F62ADC94-3491-4B4A-8096-90B62E25882D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,6 +27,10 @@ Global
 		{9B4AE021-235E-4187-A54C-268B802DE451}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B4AE021-235E-4187-A54C-268B802DE451}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B4AE021-235E-4187-A54C-268B802DE451}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F62ADC94-3491-4B4A-8096-90B62E25882D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F62ADC94-3491-4B4A-8096-90B62E25882D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F62ADC94-3491-4B4A-8096-90B62E25882D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F62ADC94-3491-4B4A-8096-90B62E25882D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +38,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{6D746885-861B-4856-BC29-ADAE6F898156} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{9B4AE021-235E-4187-A54C-268B802DE451} = {FF7C740D-08AF-4C19-B825-73075C05C715}
+		{F62ADC94-3491-4B4A-8096-90B62E25882D} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {738D7A36-E639-40A2-A8B3-882B886CE5C3}

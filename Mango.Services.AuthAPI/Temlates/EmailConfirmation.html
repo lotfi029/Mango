@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Email Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #ffffff;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #333333;
+        }
+
+        p {
+            color: #555555;
+            line-height: 1.6;
+        }
+
+        .button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 24px;
+            background-color: #007BFF;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 0.9em;
+            color: #999999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Email Confirmation</h2>
+        <p>Dear {{name}},</p>
+        <p>
+            Thank you for signing up. To complete your registration, please confirm your email address by clicking the button below.
+        </p>
+        <p>
+            <a href="{{action_url}}" class="button">Confirm Email</a>
+        </p>
+        <p>
+            If the button above doesn't work, please copy and paste the following link into your web browser:
+        </p>
+        <p>
+            <a href="{{action_url}}">{{action_url}}</a>
+        </p>
+        <p class="footer">
+            Best regards,<br>
+            The Survey Basket Team
+        </p>
+    </div>
+</body>
+</html>
