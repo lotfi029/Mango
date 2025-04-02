@@ -36,8 +36,10 @@
             background-color: #007BFF;
             color: #ffffff;
             text-decoration: none;
+            border: none;
             border-radius: 5px;
             font-weight: bold;
+            cursor: pointer;
         }
 
         .footer {
@@ -54,11 +56,15 @@
         <p>
             Thank you for signing up. To complete your registration, please confirm your email address by clicking the button below.
         </p>
+        <!-- Form to POST confirmation -->
+        <form action="{{action_url}}" method="POST">
+            <!-- Hidden fields if your endpoint requires them -->
+            <input type="hidden" name="userId" value="{{userId}}" />
+            <input type="hidden" name="code" value="{{code}}" />
+            <button type="submit" class="button">Confirm Email</button>
+        </form>
         <p>
-            <a href="{{action_url}}" class="button">Confirm Email</a>
-        </p>
-        <p>
-            If the button above doesn't work, please copy and paste the following link into your web browser:
+            If the form above doesn't work, please copy and paste the following URL into your web browser:
         </p>
         <p>
             <a href="{{action_url}}">{{action_url}}</a>

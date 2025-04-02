@@ -45,7 +45,7 @@ public class AuthEndpoints : ICarterModule
             .Produces<ProblemDetails>(StatusCodes.Status409Conflict)
             .ProducesValidationProblem();
 
-        group.MapPost("/email-confirmation", ConfirmEmail)
+        group.MapPost("/confirm", ConfirmEmail)
             .WithName(nameof(ConfirmEmail))
             .Produces(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
@@ -86,6 +86,7 @@ public class AuthEndpoints : ICarterModule
         }
 
         var result = await authService.GetTokenAsync(request, ct);
+
         return result.IsSucceed
             ? TypedResults.Ok(result.Value)
             : result.ToProblem();
@@ -100,7 +101,7 @@ public class AuthEndpoints : ICarterModule
         var validationResult = await validator.ValidateAsync(request, ct);
         if (!validationResult.IsValid)
         {
-            return TypedResults.ValidationProblem(ValidationErrors(validationResult));
+            return TypedResults.ValidationProblem(validationResult.GetValidationProblems());
         }
 
         var result = await authService.GetRefreshTokenAsync(request, ct);
@@ -118,7 +119,7 @@ public class AuthEndpoints : ICarterModule
         var validationResult = await validator.ValidateAsync(request, ct);
         if (!validationResult.IsValid)
         {
-            return TypedResults.ValidationProblem(ValidationErrors(validationResult));
+            return TypedResults.ValidationProblem(validationResult.GetValidationProblems());
         }
 
         var result = await authService.RevokeRefreshTokenAsync(request, ct);
@@ -153,7 +154,7 @@ public class AuthEndpoints : ICarterModule
         var validationResult = await validator.ValidateAsync(request);
         if (!validationResult.IsValid)
         {
-            return TypedResults.ValidationProblem(ValidationErrors(validationResult));
+            return TypedResults.ValidationProblem(validationResult.GetValidationProblems());
         }
 
         var result = await authService.ConfirmEmailAsync(request);
@@ -171,7 +172,7 @@ public class AuthEndpoints : ICarterModule
         var validationResult = await validator.ValidateAsync(request);
         if (!validationResult.IsValid)
         {
-            return TypedResults.ValidationProblem(ValidationErrors(validationResult));
+            return TypedResults.ValidationProblem(validationResult.GetValidationProblems());
         }
 
         var result = await authService.ReConfirmAsync(request);
@@ -189,7 +190,7 @@ public class AuthEndpoints : ICarterModule
         var validationResult = await validator.ValidateAsync(request);
         if (!validationResult.IsValid)
         {
-            return TypedResults.ValidationProblem(ValidationErrors(validationResult));
+            return TypedResults.ValidationProblem(validationResult.GetValidationProblems());
         }
 
         var result = await authService.SendResetPasswordCodeAsync(request);
@@ -207,7 +208,7 @@ public class AuthEndpoints : ICarterModule
         var validationResult = await validator.ValidateAsync(request);
         if (!validationResult.IsValid)
         {
-            return TypedResults.ValidationProblem(ValidationErrors(validationResult));
+            return TypedResults.ValidationProblem(validationResult.GetValidationProblems());
         }
 
         var result = await authService.ResetPasswordAsync(request);
@@ -215,12 +216,4 @@ public class AuthEndpoints : ICarterModule
             ? TypedResults.Ok()
             : result.ToProblem();
     }
-
-    // Helper method to convert FluentValidation results to a dictionary for the ValidationProblem response.
-    private static Dictionary<string, string[]> ValidationErrors(ValidationResult validationResult) =>
-        validationResult.Errors
-            .GroupBy(e => e.PropertyName)
-            .ToDictionary(
-                g => g.Key,
-                g => g.Select(e => e.ErrorMessage).ToArray());
 }

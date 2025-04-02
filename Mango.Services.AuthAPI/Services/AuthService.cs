@@ -164,9 +164,6 @@ public class AuthService(
         await SendEmailAsync(user, code);
         //_logger.LogInformation("Confirmation Email Code: {code} {mailSettings}", code, _mailSettings.ToString());
 
-        // TODO: Send Email
-
-
         return Result.Success();
     }
     private async Task SendEmailAsync(AppUser user, string code)
@@ -177,7 +174,7 @@ public class AuthService(
             new Dictionary<string, string>()
             {
                 {"{{name}}",user.FirstName},
-                {"{{action_url}}", $"{origin}/auth/email-confirmation?userId={user.Id}&code={code}"}
+                {"{{action_url}}", $"{origin}/auth/confirm?userId={user.Id}&code={code}"}
             }
         );
 
@@ -216,8 +213,6 @@ public class AuthService(
 
         await _userManager.AddToRoleAsync(user, DefaultRoles.AdminName);
         return Result.Success();
-        //return Result.Success();
-        // TODO: Send Email
     }
     public async Task<Result> ReConfirmAsync(ResendConfirmationEmailRequest request)
     {
