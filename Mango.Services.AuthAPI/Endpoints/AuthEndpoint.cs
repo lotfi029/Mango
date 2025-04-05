@@ -16,6 +16,8 @@ public class AuthEndpoints : ICarterModule
     {
         var group = app.MapGroup("/auth");
 
+
+
         group.MapPost("/token", GetToken)
             .WithName(nameof(GetToken))
             .Produces<AccessTokenResponse>(StatusCodes.Status200OK)
