@@ -2,7 +2,8 @@
 
 namespace Mango.Web.Service.IService;
 
-public interface IBaseService<T>
+public interface IBaseService
 {
-    Task<Result<T>> SendAsync(Request request);
+    Task<Result<T>> SendAsync<T>(Request request);
+    Task<Result> SendAsync(Request request);
 }

@@ -20,8 +20,10 @@ public static class DependancyInjection
         services.AddHttpContextAccessor();
         services.AddHttpClient<ICouponService, CouponService>();
 
-        services.AddScoped(typeof(IBaseService<>), typeof(BaseService<>));
+        services.AddScoped<IBaseService, BaseService>();
         services.AddScoped<ICouponService, CouponService>();
+        services.AddScoped<IAuthService, AuthService>();
+
 
         services.AddOptions<ApiSettings>()
             .BindConfiguration(ApiSettings.Section)

@@ -8,13 +8,60 @@ using System.Text;
 
 namespace Mango.Web.Service;
 
-public class BaseService<T>(IHttpClientFactory _httpClientFactory) : IBaseService<T>
-    where T : class
+public class BaseService(IHttpClientFactory _httpClientFactory) : IBaseService
 {
-    public async Task<Result<T>> SendAsync(Request request)
+    public async Task<Result<T>> SendAsync<T>(Request request)
+    {
+
+        HttpClient client = _httpClientFactory.CreateClient();
+        using var message = BuildHttpRequestMessage(request);
+
+        try
+        {
+            using var response = await client.SendAsync(message);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            
+
+            var returnedResult = response.StatusCode switch
+            {
+                HttpStatusCode.OK or HttpStatusCode.Created or HttpStatusCode.NoContent =>
+                    Result.Success(JsonConvert.DeserializeObject<T>(responseContent)!),
+                _ => Result.Fail<T>(ParseError(responseContent, response.StatusCode))
+            };
+
+            return returnedResult;
+        }
+        catch (Exception ex)
+        {
+            return Result.Fail<T>(Error.FromException(ex));
+        }
+    }
+    public async Task<Result> SendAsync(Request request)
     {
         HttpClient client = _httpClientFactory.CreateClient();
-        using var message = new HttpRequestMessage
+        using var message = BuildHttpRequestMessage(request);
+
+        try
+        {
+            using var response = await client.SendAsync(message);
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            return response.StatusCode switch
+            {
+                HttpStatusCode.OK or HttpStatusCode.Created or HttpStatusCode.NoContent =>
+                    Result.Success(),
+                _ => Result.Fail(ParseError(responseContent, response.StatusCode))
+            };
+        }
+        catch (Exception ex)
+        {
+            return Result.Fail(Error.FromException(ex));
+        }
+    }
+
+    private HttpRequestMessage BuildHttpRequestMessage(Request request)
+    {
+        var message = new HttpRequestMessage
         {
             RequestUri = new Uri(request.Url),
             Method = (sbyte)request.ApiType switch
@@ -38,27 +85,9 @@ public class BaseService<T>(IHttpClientFactory _httpClientFactory) : IBaseServic
             message.Content = new StringContent(JsonConvert.SerializeObject(request.Data), Encoding.UTF8, "application/json");
         }
 
-
-        try
-        {
-            using var response = await client.SendAsync(message);
-            var responseContent = await response.Content.ReadAsStringAsync();
-            
-
-            var returnedResult = response.StatusCode switch
-            {
-                HttpStatusCode.OK or HttpStatusCode.Created or HttpStatusCode.NoContent =>
-                    Result.Success(JsonConvert.DeserializeObject<T>(responseContent)!),
-                _ => Result.Fail<T>(ParseError(responseContent, response.StatusCode))
-            };
-
-            return returnedResult;
-        }
-        catch (Exception ex)
-        {
-            return Result.Fail<T>(Error.FromException(ex));
-        }
+        return message;
     }
+
     private static Error ParseError(string content, HttpStatusCode statusCode)
     {
         try

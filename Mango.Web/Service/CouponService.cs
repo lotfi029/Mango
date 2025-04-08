@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 namespace Mango.Web.Service;
 
 public class CouponService(
-    IBaseService<IEnumerable<CouponResponse>> baseService,
+    IBaseService baseService,
     IOptions<ApiSettings> options) : ICouponService
 {
     private readonly ApiSettings _options = options.Value;
@@ -44,7 +44,7 @@ public class CouponService(
 
     public async Task<Result<IEnumerable<CouponResponse>>> GetAllCouponsAsync(CancellationToken ct = default)
     {
-        return await baseService.SendAsync(new Request
+        return await baseService.SendAsync<IEnumerable<CouponResponse>>(new Request
         (
             _options.CouponAPI + $"{_route}",
             "non token",
@@ -55,7 +55,7 @@ public class CouponService(
 
     public async Task<Result<CouponResponse>> GetCouponByIdAsync(int id, CancellationToken ct = default)
     {
-        var response = await baseService.SendAsync(new Request
+        var response = await baseService.SendAsync<CouponResponse>(new Request
         (
             _options.CouponAPI + $"{_route}/{id}",
             "non token",
@@ -68,7 +68,7 @@ public class CouponService(
             return Result.Fail<CouponResponse>(response.Error);
         }
 
-        return Result.Success(response.Value.FirstOrDefault()!);
+        return Result.Success(response.Value);
     }
 
     
