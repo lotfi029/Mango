@@ -2,6 +2,7 @@
 using Mango.Web.Service.IService;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Text;
 
@@ -42,6 +43,7 @@ public class BaseService<T>(IHttpClientFactory _httpClientFactory) : IBaseServic
         {
             using var response = await client.SendAsync(message);
             var responseContent = await response.Content.ReadAsStringAsync();
+            
 
             var returnedResult = response.StatusCode switch
             {

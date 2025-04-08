@@ -47,12 +47,12 @@
 							@((item.MinAmount).ToString("c"))
 						</td>
 						<td>
-							<a asp-action="Details" asp-route-couponId="@item.Id" class="btn btn-success">
+							<a asp-action="Details" asp-route-id="@item.Id" class="btn btn-success">
 								<i class="bi bi-trash"></i>
 							</a>
 						</td>
 						<td>
-							<a asp-action="delete" asp asp-route-couponId="@item.Id" class="btn btn-danger">
+							<a asp-action="delete" asp asp-route-id="@item.Id" class="btn btn-danger">
 								<i class="bi bi-trash"></i>
 							</a>
 						</td>

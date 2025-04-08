@@ -42,6 +42,7 @@ public class RoleService(
         if (await _roleManager.Roles.AnyAsync(e => e.Name == request.Name))
             return RoleErrors.DuplicatedRole;
 
+        
         var allowedPermissions = Permissions.GetAllPermissions;
 
         if (request.Permission.Except(allowedPermissions).Any())
@@ -104,7 +105,6 @@ public class RoleService(
             .ToListAsync(cancellationToken);
 
 
-        // new permissions 
         var newPermission = request.Permission.Except(curPermissions).Select(x => new IdentityRoleClaim<string>
         {
             ClaimValue = x,

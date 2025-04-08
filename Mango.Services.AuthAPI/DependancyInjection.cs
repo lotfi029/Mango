@@ -69,6 +69,7 @@ public static class DependancyInjection
 
         services.AddSingleton<IJwtProvider, JwtProvider>();
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IRoleService, RoleService>();
 
         services.AddIdentity<AppUser, AppRole>()
             .AddEntityFrameworkStores<AppDbContext>()

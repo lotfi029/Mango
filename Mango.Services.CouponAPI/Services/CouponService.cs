@@ -7,11 +7,16 @@ namespace Mango.Services.CouponAPI.Services;
 
 public class CouponService(IUnitOfWork unitOfWork) : ICouponService
 {
-    public async Task<CouponResponse?> GetByIdAsync(int id, CancellationToken ct)
+    public async Task<IEnumerable<CouponResponse>> GetByIdAsync(int id, CancellationToken ct)
     {
         var coupon = await unitOfWork.Coupon.FindByIdAsync(ct, id);
 
-        return coupon?.Adapt<CouponResponse>();
+        if (coupon is null) return Enumerable.Empty<CouponResponse>();
+
+        List<CouponResponse> response = [];
+        response.Add(coupon.Adapt<CouponResponse>());
+
+        return response;
     }
 
     public async Task<IEnumerable<CouponResponse>> GetAllAsync(CancellationToken ct)

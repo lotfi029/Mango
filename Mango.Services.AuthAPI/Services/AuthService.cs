@@ -141,7 +141,7 @@ public class AuthService(
 
         return Result.Success();
     }
-    public async Task<Result> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken = default)
+    public async Task<Result<ConfirmEmailRequest>> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken = default)
     {
         if (await _userManager.Users.AnyAsync(e => e.Email == request.Email, cancellationToken))
             return UserErrors.DuplicatedEmail;
@@ -161,10 +161,10 @@ public class AuthService(
 
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
-        await SendEmailAsync(user, code);
+        //await SendEmailAsync(user, code);
         //_logger.LogInformation("Confirmation Email Code: {code} {mailSettings}", code, _mailSettings.ToString());
 
-        return Result.Success();
+        return Result.Success(new ConfirmEmailRequest(user.Id, code));
     }
     private async Task SendEmailAsync(AppUser user, string code)
     {
@@ -214,11 +214,11 @@ public class AuthService(
         await _userManager.AddToRoleAsync(user, DefaultRoles.AdminName);
         return Result.Success();
     }
-    public async Task<Result> ReConfirmAsync(ResendConfirmationEmailRequest request)
+    public async Task<Result<ConfirmEmailRequest>> ReConfirmAsync(ResendConfirmationEmailRequest request)
     {
 
         if (await _userManager.FindByEmailAsync(request.Email) is not { } user)
-            return Result.Success();
+            return UserErrors.NotFound;
 
         if (user.EmailConfirmed)
             return UserErrors.DuplicatedConfirmation;
@@ -226,11 +226,11 @@ public class AuthService(
         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
-        await SendEmailAsync(user, code);
+        //await SendEmailAsync(user, code);
 
         //_logger.LogInformation("ReConfirmation Email: {code}", code);
 
-        return Result.Success();        
+        return Result.Success(new ConfirmEmailRequest(user.Id, code));
     }
 
     public async Task<Result> SendResetPasswordCodeAsync(ForgotPasswordRequest request)

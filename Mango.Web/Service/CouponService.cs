@@ -57,7 +57,7 @@ public class CouponService(
     {
         var response = await baseService.SendAsync(new Request
         (
-            _options.CouponAPI + $"{_route}",
+            _options.CouponAPI + $"{_route}/{id}",
             "non token",
             ApiType.GET,
             null!

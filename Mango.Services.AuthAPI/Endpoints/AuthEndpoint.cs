@@ -16,8 +16,6 @@ public class AuthEndpoints : ICarterModule
     {
         var group = app.MapGroup("/auth");
 
-
-
         group.MapPost("/token", GetToken)
             .WithName(nameof(GetToken))
             .Produces<AccessTokenResponse>(StatusCodes.Status200OK)
@@ -42,7 +40,7 @@ public class AuthEndpoints : ICarterModule
 
         group.MapPost("/register", Register)
             .WithName(nameof(Register))
-            .Produces(StatusCodes.Status200OK)
+            .Produces<ConfirmEmailRequest>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<ProblemDetails>(StatusCodes.Status409Conflict)
             .ProducesValidationProblem();
@@ -55,7 +53,7 @@ public class AuthEndpoints : ICarterModule
 
         group.MapPost("/reconfirm", ReConfirm)
             .WithName(nameof(ReConfirm))
-            .Produces(StatusCodes.Status200OK)
+            .Produces<ConfirmEmailRequest>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .ProducesValidationProblem();
 
@@ -144,7 +142,7 @@ public class AuthEndpoints : ICarterModule
 
         var result = await authService.RegisterAsync(request, ct);
         return result.IsSucceed
-            ? TypedResults.Ok()
+            ? TypedResults.Ok(result.Value)
             : result.ToProblem();
     }
 
@@ -179,7 +177,7 @@ public class AuthEndpoints : ICarterModule
 
         var result = await authService.ReConfirmAsync(request);
         return result.IsSucceed
-            ? TypedResults.Ok()
+            ? TypedResults.Ok(result.Value)
             : result.ToProblem();
     }
 
