@@ -1,8 +1,6 @@
 ﻿using Mango.Web.Abstracts;
 using Mango.Web.Service.IService;
-using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Text;
 
@@ -92,9 +90,10 @@ public class BaseService(IHttpClientFactory _httpClientFactory) : IBaseService
     {
         try
         {
-            var problemDetails = JsonConvert.DeserializeObject<ProblemDetails>(content);
+            
+            var problemDetails = JsonConvert.DeserializeObject<ReturnedProblem>(content);
 
-            return new(problemDetails?.Title ?? "Error", problemDetails?.Detail ?? "an error eccure", statusCode);
+            return new ( problemDetails?.Errors[0] ?? "Error", problemDetails?.Errors[1] ?? "an error accure", statusCode);
 
         }
         catch
@@ -102,9 +101,16 @@ public class BaseService(IHttpClientFactory _httpClientFactory) : IBaseService
             return new("Error", "an error eccure", statusCode);
         }
     }
+
 }
 
-
+class ReturnedProblem
+{
+    public string? Status { get; set; }
+    public string? Title { get; set; }
+    public string? Type { get; set; }
+    public string?[] Errors { get; set; } = [];
+}
 
 
 //public class BaseService(IHttpClientFactory _httpClientFactory) : IBaseService

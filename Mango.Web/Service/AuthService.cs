@@ -1,5 +1,4 @@
 ﻿using Mango.Web.Abstracts;
-using Mango.Web.Contracts;
 using Mango.Web.Contracts.Auths;
 using Mango.Web.Service.IService;
 using Microsoft.AspNetCore.Authentication.BearerToken;
@@ -12,7 +11,7 @@ public class AuthService(
     IOptions<ApiSettings> options) : IAuthService
 {
     private readonly ApiSettings _options = options.Value;
-    private readonly string _route = "/api/auth";
+    private readonly string _route = "/auth";
 
     public async Task<Result<AuthResponse>> LoginAsync(LoginRequest request, CancellationToken ct = default)
     {
@@ -49,13 +48,16 @@ public class AuthService(
 
     public async Task<Result<ConfirmEmailRequest>> RegisterAsync(RegisterRequest request, CancellationToken ct = default)
     {
-        return await baseService.SendAsync<ConfirmEmailRequest>(new Request
+        var response =  await baseService.SendAsync<ConfirmEmailRequest>(new Request
         (
             _options.AuthAPI + $"{_route}/register",
             "non token",
             ApiType.POST,
             request
         ));
+
+
+        return response;
     }
 
     public async Task<Result> ConfirmEmailAsync(ConfirmEmailRequest request, CancellationToken ct = default)

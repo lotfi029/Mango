@@ -23,6 +23,6 @@ public static class ProblemDetailsExtention
                                 }
                             }
                         };
-        return Results.Problem(problemDetails);
+        return TypedResults.Problem(problemDetails);
     }
 }

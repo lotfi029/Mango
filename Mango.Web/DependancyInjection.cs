@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
+using Mango.Web.Abstracts;
 using Mango.Web.Contracts;
 using Mango.Web.Service;
 using Mango.Web.Service.IService;
@@ -23,7 +24,7 @@ public static class DependancyInjection
         services.AddScoped<IBaseService, BaseService>();
         services.AddScoped<ICouponService, CouponService>();
         services.AddScoped<IAuthService, AuthService>();
-
+        services.AddScoped<ITokenProvider, TokenProvider>();
 
         services.AddOptions<ApiSettings>()
             .BindConfiguration(ApiSettings.Section)
