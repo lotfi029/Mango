@@ -12,15 +12,23 @@ public class AppRoleConfiguration : IEntityTypeConfiguration<AppRole>
         builder.Property(e => e.IsDisable)
             .HasDefaultValue(false);
 
-        var adminRole = new AppRole
-        {
-            Id = DefaultRoles.AdminId,
-            Name = DefaultRoles.AdminName,
-            ConcurrencyStamp = DefaultRoles.ConcurrencyStamp,
-            IsDisable = false,
-            NormalizedName = DefaultRoles.AdminName.ToUpper()
-        };
+        AppRole[] roles = [
+            new AppRole {
+                Id = DefaultRoles.AdminId,
+                Name = DefaultRoles.AdminName,
+                ConcurrencyStamp = DefaultRoles.ConcurrencyStamp,
+                IsDisable = false,
+                NormalizedName = DefaultRoles.AdminName.ToUpper()
+            },
+            new AppRole {
+                Id = DefaultRoles.UserId,
+                Name = DefaultRoles.UserName,
+                ConcurrencyStamp = DefaultRoles.UserConcurrencyStamp,
+                IsDisable = false,
+                NormalizedName = DefaultRoles.UserName.ToUpper()
+            }
+        ];
 
-        builder.HasData(adminRole);
+        builder.HasData(roles);
     }
 }

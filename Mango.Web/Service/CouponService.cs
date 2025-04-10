@@ -7,16 +7,18 @@ namespace Mango.Web.Service;
 
 public class CouponService(
     IBaseService baseService,
+    ITokenProvider _tokenProvider,
     IOptions<ApiSettings> options) : ICouponService
 {
     private readonly ApiSettings _options = options.Value;
     private readonly string _route = "/api/coupons";
+    private readonly string _token = _tokenProvider.GetToken() ?? string.Empty;
     public async Task<Result> CreateCouponAsync(CouponRequest request, CancellationToken ct = default)
     {
         return await baseService.SendAsync(new Request
         (
             _options.CouponAPI + _route,
-            "non token",
+            _token,
             ApiType.POST,
             request
         ));
@@ -26,7 +28,7 @@ public class CouponService(
         return await baseService.SendAsync(new Request
         (
             _options.CouponAPI + $"{_route}/{id}",
-            "non token",
+            _token,
             ApiType.PUT,
             request
         ));
@@ -36,7 +38,7 @@ public class CouponService(
         return await baseService.SendAsync(new Request
         (
             _options.CouponAPI + $"{_route}/{id}",
-            "non token",
+            _token,
             ApiType.DELETE,
             null!
         ));
@@ -47,7 +49,7 @@ public class CouponService(
         return await baseService.SendAsync<IEnumerable<CouponResponse>>(new Request
         (
             _options.CouponAPI + $"{_route}",
-            "non token",
+            _token,
             ApiType.GET,
             null!
         ));
@@ -58,7 +60,7 @@ public class CouponService(
         var response = await baseService.SendAsync<CouponResponse>(new Request
         (
             _options.CouponAPI + $"{_route}/{id}",
-            "non token",
+            _token,
             ApiType.GET,
             null!
         ));

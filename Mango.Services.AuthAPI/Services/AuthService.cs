@@ -25,8 +25,7 @@ public class AuthService(
     IEmailSender _emailSender,
     IHttpContextAccessor _contextAccessor,
     IOptions<MailOptions> mailSettings,
-    AppDbContext _context,
-    ILogger<AuthService> _logger) : IAuthService
+    AppDbContext _context) : IAuthService
 {
 
     private readonly MailOptions _mailSettings = mailSettings.Value;
@@ -148,11 +147,19 @@ public class AuthService(
 
 
         var user = request.Adapt<AppUser>();
-        var result = await _userManager.CreateAsync(user, request.Password);
+        var createUserResult = await _userManager.CreateAsync(user, request.Password);
 
-        if (!result.Succeeded)
+        if (!createUserResult.Succeeded)
         {
-            var error = result.Errors.First();
+            var error = createUserResult.Errors.First();
+            return Error.BadRequest(error!.Code, error.Description);
+        }
+
+        var addToRoleResult = await _userManager.AddToRoleAsync(user, DefaultRoles.UserName);
+
+        if (!addToRoleResult.Succeeded)
+        {
+            var error = addToRoleResult.Errors.First();
             return Error.BadRequest(error!.Code, error.Description);
         }
 
