@@ -155,14 +155,6 @@ public class AuthService(
             return Error.BadRequest(error!.Code, error.Description);
         }
 
-        var addToRoleResult = await _userManager.AddToRoleAsync(user, DefaultRoles.UserName);
-
-        if (!addToRoleResult.Succeeded)
-        {
-            var error = addToRoleResult.Errors.First();
-            return Error.BadRequest(error!.Code, error.Description);
-        }
-
         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -217,7 +209,7 @@ public class AuthService(
             return Error.BadRequest(error!.Code, error.Description);
         }
 
-        await _userManager.AddToRoleAsync(user, DefaultRoles.AdminName);
+        await _userManager.AddToRoleAsync(user, DefaultRoles.UserName);
         return Result.Success();
     }
     public async Task<Result<ConfirmEmailRequest>> ReConfirmAsync(ResendConfirmationEmailRequest request)

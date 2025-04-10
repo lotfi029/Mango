@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Mango.Services.CouponAPI.Services;
 using Mango.Services.CouponAPI.Contracts;
+using Mango.Services.CouponAPI.Abstracts.Constants;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Mango.Services.CouponAPI.Endpoints;
 
@@ -15,19 +17,24 @@ public class CouponEndpoints : ICarterModule
         group.MapGet("/{id:int}", Get)
             .WithName(nameof(Get))
             .Produces<CouponResponse>(200)
-            .ProducesProblem(404);
+            .ProducesProblem(404)
+            .RequireAuthorization(DefaultRoles.User);
 
         group.MapGet("/", GetAll)
-            .Produces<CouponResponse>(200);
+            .Produces<CouponResponse>(200)
+            .RequireAuthorization(DefaultRoles.User);
 
         group.MapPost("/", Create)
-            .ProducesProblem(400);
+            .ProducesProblem(400)
+            .RequireAuthorization(DefaultRoles.Admin);
 
         group.MapPut("/{id:int}", Update)
-            .ProducesProblem(400);
+            .ProducesProblem(400)
+            .RequireAuthorization(DefaultRoles.Admin);
 
         group.MapDelete("/{id:int}", Delete)
-            .ProducesProblem(400);
+            .ProducesProblem(400)
+            .RequireAuthorization(DefaultRoles.Admin);
     }
 
     private async Task<IResult> Get(

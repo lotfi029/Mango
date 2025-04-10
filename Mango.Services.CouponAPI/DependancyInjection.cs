@@ -1,6 +1,7 @@
 ﻿using Carter;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Mango.Services.CouponAPI.Abstracts.Constants;
 using Mango.Services.CouponAPI.HostedServices;
 using Mango.Services.CouponAPI.Persistence;
 using Mango.Services.CouponAPI.Repositories;
@@ -91,6 +92,18 @@ public static class DependancyInjection
                 ValidAudience = settings.Audience,
             };
         });
+
+        services.AddAuthorizationBuilder()
+            .AddPolicy(DefaultRoles.User, policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.RequireRole(DefaultRoles.User);
+            })
+            .AddPolicy(DefaultRoles.Admin, policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.RequireRole(DefaultRoles.Admin);
+            });
 
         return services;
     }
