@@ -104,6 +104,7 @@ public static class DependancyInjection
         services.Configure<IdentityOptions>(options =>
         {
             options.Password.RequiredLength = 8;
+            options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$-_";
             options.User.RequireUniqueEmail = true;
             options.SignIn.RequireConfirmedEmail = true;
         });

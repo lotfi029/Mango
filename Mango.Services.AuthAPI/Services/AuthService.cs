@@ -148,7 +148,6 @@ public class AuthService(
 
 
         var user = request.Adapt<AppUser>();
-        user.UserName = request.FirstName;
         var result = await _userManager.CreateAsync(user, request.Password);
 
         if (!result.Succeeded)
@@ -233,10 +232,10 @@ public class AuthService(
         return Result.Success(new ConfirmEmailRequest(user.Id, code));
     }
 
-    public async Task<Result> SendResetPasswordCodeAsync(ForgotPasswordRequest request)
+    public async Task<Result<ResetPasswordCodeResponse>> SendResetPasswordCodeAsync(ForgotPasswordRequest request)
     {
         if (await _userManager.FindByEmailAsync(request.Email) is not { } user)
-            return Result.Success();
+            return Result.Success(new ResetPasswordCodeResponse("", ""));
 
         if (!user.EmailConfirmed)
             return UserErrors.EmailIsNotConfirmed;
@@ -245,9 +244,11 @@ public class AuthService(
 
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
-        _logger.LogInformation("Confirmation Code: {code}", code);
+        //_logger.LogInformation("Confirmation Code: {code}", code);
 
-        return Result.Success();
+        var response = new ResetPasswordCodeResponse(user.Email!, code);
+
+        return Result.Success(response);
     }
     public async Task<Result> ResetPasswordAsync(ResetPasswordRequest request)
     {

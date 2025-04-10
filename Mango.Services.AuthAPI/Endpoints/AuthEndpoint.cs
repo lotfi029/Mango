@@ -59,7 +59,7 @@ public class AuthEndpoints : ICarterModule
 
         group.MapPost("/forgot-password", SendResetPasswordCode)
             .WithName(nameof(SendResetPasswordCode))
-            .Produces(StatusCodes.Status200OK)
+            .Produces<ResetPasswordCodeResponse>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .ProducesValidationProblem();
@@ -195,7 +195,7 @@ public class AuthEndpoints : ICarterModule
 
         var result = await authService.SendResetPasswordCodeAsync(request);
         return result.IsSucceed
-            ? TypedResults.Ok()
+            ? TypedResults.Ok(result.Value)
             : result.ToProblem();
     }
 

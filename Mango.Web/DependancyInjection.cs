@@ -4,6 +4,7 @@ using Mango.Web.Abstracts;
 using Mango.Web.Contracts;
 using Mango.Web.Service;
 using Mango.Web.Service.IService;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Mango.Web;
 
@@ -30,6 +31,14 @@ public static class DependancyInjection
             .BindConfiguration(ApiSettings.Section)
             .ValidateDataAnnotations()
             .ValidateOnStart();
+
+        services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/auth/login";
+                options.AccessDeniedPath = "/auth/forbidden";
+                options.ExpireTimeSpan = TimeSpan.FromHours(10);
+            });
 
         return services;
     }

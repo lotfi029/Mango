@@ -1,4 +1,8 @@
 ﻿using Mango.Web.Service.IService;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace Mango.Web.Controllers;
 
@@ -28,29 +32,33 @@ public class AuthController(
 
         if (!result.IsSucceed)
         {
-            ModelState.AddModelError(string.Empty, result.Error.Description ?? "An error occurred");
+            ModelState.AddModelError(result.Error.Code ?? "Error", result.Error.Description ?? "An error occurred");
             return View(request);
         }
+        await SignInAsync(result.Value); 
         _tokenProvider.SetToken(result.Value.AccessToken);
 
         return RedirectToAction("Index", "Home");
     }
 
     [HttpGet("logout")]
-    public IActionResult Logout()
+    public async Task<IActionResult> Logout()
     {
+        await HttpContext.SignOutAsync();
+
         _tokenProvider.RemoveToken();
+
         return RedirectToAction("login");
     }
 
     [HttpGet("register")]
     public IActionResult Register()
     {
-        var request = new RegisterRequest("", "", "", "");
+        var request = new RegisterRequest("", "", "", "", "");
 
         return View(request);
     }
-    
+
     [HttpPost("register")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Register(RegisterRequest request)
@@ -72,16 +80,17 @@ public class AuthController(
         var confirmEmailRequest = new ConfirmEmailRequest(result.Value.UserId, result.Value.Code);
 
         var confirmEmailResult = await _authService.ConfirmEmailAsync(confirmEmailRequest);
-        
+
         if (!confirmEmailResult.IsSucceed)
         {
             ModelState.AddModelError(string.Empty, confirmEmailResult.Error.Description ?? "An error occurred");
             return View(request);
         }
 
+
         return RedirectToAction("Login");
     }
-    
+
     [HttpGet("forgot-password")]
     public IActionResult ForgotPassword()
     {
@@ -107,25 +116,22 @@ public class AuthController(
             return View(request);
         }
 
-        return RedirectToAction("ResetPassword");
+        return RedirectToAction("ResetPassword", result.Value);
     }
     [HttpGet("reset-password")]
-    public IActionResult ResetPassword()
-    {
-        var request = new ResetPasswordRequest("", "", "");
-
-        return View(request);
-    }
+    public IActionResult ResetPassword(ResetPasswordResponse request) 
+        => View(new ResetPasswordRequest(request.Email, request.Code, "", ""));
+    
     [HttpPost("reset-password")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ResetPassword(ForgotPasswordRequest request)
+    public async Task<IActionResult> ResetPassword(ResetPasswordRequest request)
     {
         if (!ModelState.IsValid)
         {
             return View(request);
         }
 
-        var result = await _authService.SendResetPasswordCodeAsync(request);
+        var result = await _authService.ResetPasswordAsync(request);
 
         if (!result.IsSucceed)
         {
@@ -133,6 +139,42 @@ public class AuthController(
             return View(request);
         }
 
-        return RedirectToAction("ResetPassword");
+        return RedirectToAction("login");
+    }
+
+    private async Task SignInAsync(AuthResponse authResponse)
+    {
+        var handler = new JwtSecurityTokenHandler();
+        var jwt = handler.ReadJwtToken(authResponse.AccessToken);
+
+        var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+
+        var email = jwt.Claims.FirstOrDefault(e => e.Type == JwtRegisteredClaimNames.Email)?.Value;
+        var firstName = jwt.Claims.FirstOrDefault(e => e.Type == JwtRegisteredClaimNames.GivenName)?.Value;
+        var lastName = jwt.Claims.FirstOrDefault(e => e.Type == JwtRegisteredClaimNames.FamilyName)?.Value;
+
+        if (email == null || firstName == null || lastName == null)
+        {
+            throw new InvalidOperationException("Required user information is missing in the token.");
+        }
+
+        identity.AddClaim(new(JwtRegisteredClaimNames.Sub, jwt.Claims.FirstOrDefault(e => e.Type == JwtRegisteredClaimNames.Sub)!.Value));
+        identity.AddClaim(new(JwtRegisteredClaimNames.Name, email));
+        identity.AddClaim(new(JwtRegisteredClaimNames.GivenName, firstName));
+        identity.AddClaim(new(JwtRegisteredClaimNames.FamilyName, lastName));
+        identity.AddClaim(new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
+
+        
+        var roles = jwt.Claims.FirstOrDefault(e => e.Type == "roles")?.Value ?? "[]";
+        var permissions = jwt.Claims.FirstOrDefault(e => e.Type == "permissions")?.Value ?? "[]";
+
+        identity.AddClaim(new(nameof(roles), roles, JsonClaimValueTypes.JsonArray));
+        identity.AddClaim(new(nameof(permissions), permissions, JsonClaimValueTypes.JsonArray));
+
+        var principal = new ClaimsPrincipal(identity);
+        await HttpContext.SignInAsync(
+            CookieAuthenticationDefaults.AuthenticationScheme,
+            principal);
+
     }
 }

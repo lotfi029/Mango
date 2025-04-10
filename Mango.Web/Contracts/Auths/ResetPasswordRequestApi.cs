@@ -1,8 +1,7 @@
 ﻿namespace Mango.Web.Contracts.Auths;
 
-public record ResetPasswordRequest(
+public record ResetPasswordRequestApi(
     string Email,
     string ResetCode,
-    string Password,
-    string ConfirmPassword
+    string NewPassword
 );
