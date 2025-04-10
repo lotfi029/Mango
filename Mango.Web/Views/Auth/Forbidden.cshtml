@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Access Denied";
+}
+
+<style>
+    .custom-alert {
+        background-color: #dc3545;
+        color: white;
+        padding: 15px 20px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+        font-weight: 500;
+        margin-top: 20px;
+    }
+
+    .custom-alert i {
+        font-size: 20px;
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="custom-alert">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        You do not have permission to access this page.
+    </div>
+</div>

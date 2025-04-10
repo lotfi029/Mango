@@ -1,6 +1,6 @@
 ﻿using Mango.Web.Contracts;
 using Mango.Web.Service.IService;
-using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace Mango.Web.Controllers;
 
@@ -13,8 +13,11 @@ public class CouponController(ICouponService _couponService) : Controller
         var response = await _couponService.GetAllCouponsAsync();
 
         if (!response.IsSucceed)
-         {
-            return NotFound();
+        {
+            if (response.Error.StatusCode == HttpStatusCode.Forbidden || response.Error.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                return RedirectToAction("forbidden", "Auth");
+            }
         }
 
         return View(response.Value);
@@ -93,7 +96,6 @@ public class CouponController(ICouponService _couponService) : Controller
         return View(couponResponse.Value);
     }
 
-    // POST: coupon/delete/{couponId}
     [HttpPost("delete/{couponId:int}")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(int couponId, CancellationToken ct = default)
@@ -101,7 +103,6 @@ public class CouponController(ICouponService _couponService) : Controller
         var response = await _couponService.DeleteCouponAsync(couponId, ct);
         if (!response.IsSucceed)
         {
-            // Optionally: Display an error or return to the confirmation view
             var couponResponse = await _couponService.GetCouponByIdAsync(couponId, ct);
             return View("Delete", couponResponse.Value);
         }

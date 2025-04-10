@@ -33,6 +33,7 @@ public class AuthController(
         if (!result.IsSucceed)
         {
             ModelState.AddModelError(result.Error.Code ?? "Error", result.Error.Description ?? "An error occurred");
+
             return View(request);
         }
         await SignInAsync(result.Value); 
@@ -49,6 +50,11 @@ public class AuthController(
         _tokenProvider.RemoveToken();
 
         return RedirectToAction("login");
+    }
+    [HttpGet("forbidden")]
+    public IActionResult Forbidden()
+    {
+        return View();
     }
 
     [HttpGet("register")]
@@ -73,7 +79,7 @@ public class AuthController(
         if (!result.IsSucceed)
         {
             ModelState.AddModelError(result.Error.Code ?? "Error", result.Error.Description ?? "An error occurred");
-
+            //TempData["error"] = result.Error.Description ?? "An error occurred";
             return View(request);
         }
 
@@ -159,11 +165,12 @@ public class AuthController(
         }
 
         identity.AddClaim(new(JwtRegisteredClaimNames.Sub, jwt.Claims.FirstOrDefault(e => e.Type == JwtRegisteredClaimNames.Sub)!.Value));
-        identity.AddClaim(new(JwtRegisteredClaimNames.Name, email));
+        identity.AddClaim(new(JwtRegisteredClaimNames.Email, email));
         identity.AddClaim(new(JwtRegisteredClaimNames.GivenName, firstName));
         identity.AddClaim(new(JwtRegisteredClaimNames.FamilyName, lastName));
         identity.AddClaim(new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
 
+        identity.AddClaim(new(ClaimTypes.Name, firstName + " " + lastName));
         
         var roles = jwt.Claims.FirstOrDefault(e => e.Type == "roles")?.Value ?? "[]";
         var permissions = jwt.Claims.FirstOrDefault(e => e.Type == "permissions")?.Value ?? "[]";

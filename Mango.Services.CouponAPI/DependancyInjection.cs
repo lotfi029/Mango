@@ -7,8 +7,11 @@ using Mango.Services.CouponAPI.Repositories;
 using Mango.Services.CouponAPI.Services;
 using Mapster;
 using MapsterMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
+using System.Text;
 
 namespace Mango.Services.CouponAPI;
 
@@ -18,6 +21,8 @@ public static class DependancyInjection
     {
         services.AddServices();
         services.RegisterServicesAndRespository();
+        services.AddAuthConfig(configuration);
+
 
         services.AddDbServices(configuration);
         services.AddHostedService<MigrationService>();
@@ -54,6 +59,39 @@ public static class DependancyInjection
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
             );
         
+        return services;
+    }
+    private static IServiceCollection AddAuthConfig(this IServiceCollection services, IConfigurationManager configuration)
+    {
+
+        services.AddAuthorization();
+
+        services.AddOptions<JwtOptions>()
+           .BindConfiguration(JwtOptions.SectionName)
+           .ValidateDataAnnotations()
+           .ValidateOnStart();
+
+        var settings = configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>();
+
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(o =>
+        {
+            o.SaveToken = true;
+            o.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(settings!.Key)),
+                ValidIssuer = settings.Issuer,
+                ValidAudience = settings.Audience,
+            };
+        });
+
         return services;
     }
 }

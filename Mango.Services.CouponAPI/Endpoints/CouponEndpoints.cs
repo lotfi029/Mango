@@ -9,7 +9,8 @@ public class CouponEndpoints : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/api/coupons");
+        var group = app.MapGroup("/api/coupons")
+            .RequireAuthorization();
 
         group.MapGet("/{id:int}", Get)
             .WithName(nameof(Get))
