@@ -1,6 +1,6 @@
 ﻿namespace Mango.Services.CouponAPI.Abstracts;
 
-public class Result
+public record Result
 {
     public Result(bool isSucceed, Error error)
     {
@@ -26,7 +26,7 @@ public class Result
         => new(default!, false, error);
 }
 
-public record Result<T>(T Value, bool IsSucceed, Error Error)
+public record Result<T>(T Value, bool IsSucceed, Error Error) : Result(IsSucceed, Error)
 {
     public static implicit operator Result<T>(Error error)
         => new(default!, false, error);

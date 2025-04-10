@@ -1,4 +1,4 @@
-﻿namespace Mango.Services.AuthAPI.Abstracts;
+﻿namespace Mango.Services.ProductAPI.Abstracts;
 
 public record Result
 {
@@ -38,4 +38,5 @@ public record Result<T>(T Value, bool IsSucceed, Error Error) : Result(IsSucceed
         get => IsSucceed ? _value : throw new InvalidOperationException("Result is not succeed.");
         init => _value = value;
     }
+
 }
