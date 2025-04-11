@@ -23,6 +23,7 @@ public static class DependancyInjection
 
         services.AddScoped<IBaseService, BaseService>();
         services.AddScoped<ICouponService, CouponService>();
+        services.AddScoped<IProductService, ProductService>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<ITokenProvider, TokenProvider>();
 
