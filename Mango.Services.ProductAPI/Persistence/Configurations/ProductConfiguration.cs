@@ -28,7 +28,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
                 Description = "IPhone X",
                 Price = 1000,
                 CategoryName = "Smart Phone",
-                ImageUrl = "https://mango.com/images/products/iphone-x.jpg"
+                ImageUrl = "https://fakeimg.pl/440x230/282828/eae0d0/?retina=1&text=Supports%20emojis!%20%F0%9F%98%8B"
             },
             new()
             {
@@ -37,7 +37,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
                 Description = "Samsung Galaxy S10",
                 Price = 900,
                 CategoryName = "Smart Phone",
-                ImageUrl = "https://mango.com/images/products/samsung-galaxy-s10.jpg"
+                ImageUrl = "https://fakeimg.pl/440x230/282828/eae0d0/?retina=1&text=Supports%20emojis!%20%F0%9F%98%8B"
             },
             new()
             {
@@ -46,7 +46,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
                 Description = "Google Pixel 3",
                 Price = 800,
                 CategoryName = "Smart Phone",
-                ImageUrl = "https://mango.com/images/products/google-pixel-3.jpg"
+                ImageUrl = "https://fakeimg.pl/440x230/282828/eae0d0/?retina=1&text=Supports%20emojis!%20%F0%9F%98%8B"
             },
             new()
             {
@@ -55,7 +55,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
                 Description = "OnePlus 6T",
                 Price = 700,
                 CategoryName = "Smart Phone",
-                ImageUrl = "https://mango.com/images/products/oneplus-6t.jpg"
+                ImageUrl = "https://fakeimg.pl/440x230/282828/eae0d0/?retina=1&text=Supports%20emojis!%20%F0%9F%98%8B"
             },
             new()
             {
@@ -64,7 +64,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
                 Description = "Nokia 9 PureView",
                 Price = 600,
                 CategoryName = "Smart Phone",
-                ImageUrl = "https://mango.com/images/products/nokia-9-pureview.jpg"
+                ImageUrl = "https://fakeimg.pl/440x230/282828/eae0d0/?retina=1&text=Supports%20emojis!%20%F0%9F%98%8B"
             },
             new()
             {
@@ -73,7 +73,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
                 Description = "Sony Xperia 1",
                 Price = 1100,
                 CategoryName = "Smart Phone",
-                ImageUrl = "https://mango.com/images/products/sony-xperia-1.jpg"
+                ImageUrl = "https://fakeimg.pl/440x230/282828/eae0d0/?retina=1&text=Supports%20emojis!%20%F0%9F%98%8B"
             },
             new()
             {
@@ -82,7 +82,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
                 Description = "LG G8 ThinQ",
                 Price = 800,
                 CategoryName = "Smart Phone",
-                ImageUrl = "https://mango.com/images/products/lg-g8-thinq.jpg"
+                ImageUrl = "https://fakeimg.pl/440x230/282828/eae0d0/?retina=1&text=Supports%20emojis!%20%F0%9F%98%8B"
             }
         ];
 

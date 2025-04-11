@@ -1,14 +1,14 @@
 ﻿using Mango.Web.Abstracts;
-using Mango.Web.Service.IService;
+using Mango.Web.Services.IServices;
 using Newtonsoft.Json;
 using System.Net;
 using System.Text;
 
-namespace Mango.Web.Service;
+namespace Mango.Web.Services;
 
 public class BaseService(IHttpClientFactory _httpClientFactory) : IBaseService
 {
-    public async Task<Result<T>> SendAsync<T>(Request request)
+    public async Task<Result<T>> SendAsync<T>(Request request, CancellationToken ct = default)
     {
 
         HttpClient client = _httpClientFactory.CreateClient();
@@ -16,8 +16,8 @@ public class BaseService(IHttpClientFactory _httpClientFactory) : IBaseService
 
         try
         {
-            using var response = await client.SendAsync(message);
-            var responseContent = await response.Content.ReadAsStringAsync();
+            using var response = await client.SendAsync(message, ct);
+            var responseContent = await response.Content.ReadAsStringAsync(ct);
             
 
             var returnedResult = response.StatusCode switch
@@ -34,15 +34,15 @@ public class BaseService(IHttpClientFactory _httpClientFactory) : IBaseService
             return Result.Fail<T>(Error.FromException(ex));
         }
     }
-    public async Task<Result> SendAsync(Request request)
+    public async Task<Result> SendAsync(Request request, CancellationToken ct = default)
     {
         HttpClient client = _httpClientFactory.CreateClient();
         using var message = BuildHttpRequestMessage(request);
 
         try
         {
-            using var response = await client.SendAsync(message);
-            var responseContent = await response.Content.ReadAsStringAsync();
+            using var response = await client.SendAsync(message, ct);
+            var responseContent = await response.Content.ReadAsStringAsync(ct);
 
             return response.StatusCode switch
             {

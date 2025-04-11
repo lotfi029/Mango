@@ -1,5 +1,5 @@
 ﻿using Mango.Web.Contracts;
-using Mango.Web.Service.IService;
+using Mango.Web.Services.IServices;
 using System.Net;
 
 namespace Mango.Web.Controllers;

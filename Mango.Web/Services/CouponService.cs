@@ -1,9 +1,9 @@
 ﻿using Mango.Web.Abstracts;
 using Mango.Web.Contracts;
-using Mango.Web.Service.IService;
+using Mango.Web.Services.IServices;
 using Microsoft.Extensions.Options;
 
-namespace Mango.Web.Service;
+namespace Mango.Web.Services;
 
 public class CouponService(
     IBaseService baseService,

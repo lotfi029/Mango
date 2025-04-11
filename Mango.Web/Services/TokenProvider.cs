@@ -1,10 +1,7 @@
 ﻿using Mango.Web.Abstracts;
-using Mango.Web.Service.IService;
-using System.Net;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
+using Mango.Web.Services.IServices;
 
-namespace Mango.Web.Service;
+namespace Mango.Web.Services;
 
 public class TokenProvider(IHttpContextAccessor _contextAccessor) : ITokenProvider
 {

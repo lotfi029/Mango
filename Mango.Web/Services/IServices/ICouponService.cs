@@ -1,7 +1,7 @@
 ﻿using Mango.Web.Abstracts;
 using Mango.Web.Contracts;
 
-namespace Mango.Web.Service.IService;
+namespace Mango.Web.Services.IServices;
 
 public interface ICouponService
 {

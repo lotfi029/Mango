@@ -13,7 +13,7 @@ public class ProductEndpoints : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/products")
+        var group = app.MapGroup("/api/products")
             .RequireAuthorization();
 
         group.MapGet("/{id:int}", GetById)

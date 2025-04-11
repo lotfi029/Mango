@@ -1,7 +1,6 @@
 ﻿using Mango.Web.Abstracts;
-using Mango.Web.Contracts.Auths;
 
-namespace Mango.Web.Service.IService;
+namespace Mango.Web.Services.IServices;
 
 public interface IAuthService
 {

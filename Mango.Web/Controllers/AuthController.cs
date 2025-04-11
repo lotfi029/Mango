@@ -1,4 +1,4 @@
-﻿using Mango.Web.Service.IService;
+﻿using Mango.Web.Services.IServices;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.IdentityModel.Tokens.Jwt;

@@ -1,9 +1,8 @@
-﻿using FluentValidation;
-using FluentValidation.AspNetCore;
+﻿using FluentValidation.AspNetCore;
 using Mango.Web.Abstracts;
 using Mango.Web.Contracts;
-using Mango.Web.Service;
-using Mango.Web.Service.IService;
+using Mango.Web.Services;
+using Mango.Web.Services.IServices;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Mango.Web;
