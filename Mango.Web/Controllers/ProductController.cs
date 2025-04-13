@@ -38,7 +38,7 @@ public class ProductController(IProductService _productService) : Controller
     public IActionResult Create()
     {
         return View();
-    }
+    } 
 
     [HttpPost("create")]
     [ValidateAntiForgeryToken]
