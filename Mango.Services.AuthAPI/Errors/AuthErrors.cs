@@ -9,7 +9,7 @@ public record UserErrors
         Error.Unauthorized("User.InvalidCredentials", "Invalid email/password");
 
     public static readonly Error DisabledUser =
-        Error.Forbidden("User.DisabledUser", "Disabled user. Please contact your administrator.");
+        Error.Unauthorized("User.DisabledUser", "Disabled user. Please contact your administrator.");
 
     public static readonly Error LockedUser =
         Error.Locked("User.LockedUser", "Locked user. Please contact your administrator.");
@@ -21,7 +21,7 @@ public record UserErrors
         Error.Conflict("User.DuplicatedEmail", "Another user with the same email already exists.");
 
     public static readonly Error EmailIsNotConfirmed =
-        Error.Forbidden("User.EmailIsNotConfirmed", "Email is not confirmed.");
+        Error.Unauthorized("User.EmailIsNotConfirmed", "Email is not confirmed.");
 
     public static readonly Error InvalidCode =
         Error.BadRequest("User.InvalidCode", "Invalid code.");

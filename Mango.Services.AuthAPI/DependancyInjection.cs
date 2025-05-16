@@ -109,6 +109,14 @@ public static class DependancyInjection
             options.SignIn.RequireConfirmedEmail = true;
         });
 
+        services.AddCors(options =>
+        {
+            options.AddPolicy("CorsPolicy",
+                builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowAnyOrigin());
+        });
 
         return services;
     }
