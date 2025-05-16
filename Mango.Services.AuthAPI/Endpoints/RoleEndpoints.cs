@@ -2,12 +2,12 @@
 using Carter.ModelBinding;
 using FluentValidation;
 using FluentValidation.Results;
-using Mango.Services.AuthAPI.Abstracts;
-using Mango.Services.AuthAPI.Contracts;
-using Mango.Services.AuthAPI.Services;
+using Store.Services.AuthAPI.Abstracts;
+using Store.Services.AuthAPI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Store.Services.AuthAPI.Contracts.Roles;
 
-namespace Mango.Services.AuthAPI.Endpoints;
+namespace Store.Services.AuthAPI.Endpoints;
 
 public class RoleEndpoints : ICarterModule
 {
@@ -63,8 +63,8 @@ public class RoleEndpoints : ICarterModule
         [FromServices] IRoleService roleService)
     {
         var result = await roleService.GetAsync(id);
-        return result.IsSucceed
-            ? TypedResults.Ok(result.Value)
+        return result.IsSuccess
+            ? TypedResults.Ok(result.Data)
             : result.ToProblem();
     }
 
@@ -81,8 +81,8 @@ public class RoleEndpoints : ICarterModule
         
 
         var result = await roleService.AddAsync(request);
-        return result.IsSucceed
-            ? TypedResults.Ok(result.Value)
+        return result.IsSuccess     
+            ? TypedResults.Ok(result.Data)
             : result.ToProblem();
     }
 
@@ -99,7 +99,7 @@ public class RoleEndpoints : ICarterModule
         
 
         var result = await roleService.UpdateAsync(id, request, ct);
-        return result.IsSucceed
+        return result.IsSuccess
             ? TypedResults.Ok()
             : result.ToProblem();
     }
@@ -109,7 +109,7 @@ public class RoleEndpoints : ICarterModule
         [FromServices] IRoleService roleService)
     {
         var result = await roleService.ToggleAsync(id);
-        return result.IsSucceed
+        return result.IsSuccess
             ? TypedResults.Ok()
             : result.ToProblem();
     }

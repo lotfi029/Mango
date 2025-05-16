@@ -1,7 +1,5 @@
 ﻿using FluentValidation;
-
-namespace Mango.Services.AuthAPI.Contracts.Users;
-
+namespace Store.Services.AuthAPI.Contracts.Users;
 public class UpdateUserRequestValidator : AbstractValidator<UpdateUserRequest>
 {
     public UpdateUserRequestValidator()

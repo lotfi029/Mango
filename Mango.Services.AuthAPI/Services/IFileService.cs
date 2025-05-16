@@ -1,4 +1,4 @@
-﻿namespace Mango.Services.AuthAPI.Services;
+﻿namespace Store.Services.AuthAPI.Services;
 
 public interface IFileService
 {

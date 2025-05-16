@@ -1,4 +1,4 @@
-﻿namespace Mango.Services.AuthAPI.Contracts;
+﻿namespace Store.Services.AuthAPI.Contracts.Auths;
 
 public record ResendConfirmationEmailRequest(
     string Email

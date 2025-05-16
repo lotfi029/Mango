@@ -1,10 +1,10 @@
-﻿using Mango.Services.AuthAPI.Abstracts.Constants;
-using Mango.Services.AuthAPI.Entities;
+﻿using Store.Services.AuthAPI.Abstracts.Constants;
+using Store.Services.AuthAPI.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Mango.Services.AuthAPI.Persistence.Configurations;
+namespace Store.Services.AuthAPI.Persistence.Configurations;
 
 public class AppUserConfiguration : IEntityTypeConfiguration<AppUser>
 {

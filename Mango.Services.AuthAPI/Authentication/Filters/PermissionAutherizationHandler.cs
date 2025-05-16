@@ -1,7 +1,7 @@
-﻿using Mango.Services.AuthAPI.Abstracts.Constants;
+﻿using Store.Services.AuthAPI.Abstracts.Constants;
 using Microsoft.AspNetCore.Authorization;
 
-namespace Mango.Services.AuthAPI.Authentication.Filters;
+namespace Store.Services.AuthAPI.Authentication.Filters;
 
 public class PermissionAutherizationHandler : AuthorizationHandler<PermissionRequirement>
 {

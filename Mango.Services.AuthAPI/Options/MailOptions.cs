@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Mango.Services.AuthAPI.Options;
+namespace Store.Services.AuthAPI.Options;
 public class MailOptions
 {
     public const string SectionName = "MailSettings";

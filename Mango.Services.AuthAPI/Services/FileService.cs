@@ -1,9 +1,4 @@
-﻿
-using static System.Net.Mime.MediaTypeNames;
-using System.Collections.Generic;
-using System.IO;
-
-namespace Mango.Services.AuthAPI.Services;
+﻿namespace Store.Services.AuthAPI.Services;
 
 public class FileService(IWebHostEnvironment _webHostEnvironment) : IFileService
 {

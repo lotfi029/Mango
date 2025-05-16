@@ -1,8 +1,9 @@
-﻿using Mango.Services.AuthAPI.Abstracts;
-using Mango.Services.AuthAPI.Contracts;
+﻿using Store.Services.AuthAPI.Abstracts;
 using Microsoft.AspNetCore.Authentication.BearerToken;
+using Store.Services.AuthAPI.Contracts.Auths;
+using Store.Abstractions.Abstraction;
 
-namespace Mango.Services.AuthAPI.Services;
+namespace Store.Services.AuthAPI.Services;
 
 public interface IAuthService
 {

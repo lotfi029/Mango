@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Mango.Services.AuthAPI.Persistence
+namespace Store.Services.AuthAPI.Persistence
 {
     /// <inheritdoc />
     public partial class SeedingIdentityTables : Migration

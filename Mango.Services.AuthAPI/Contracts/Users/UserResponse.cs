@@ -1,4 +1,4 @@
-﻿namespace Mango.Services.AuthAPI.Contracts.Users;
+﻿namespace Store.Services.AuthAPI.Contracts.Users;
 
 public record UserResponse(
     string Id,

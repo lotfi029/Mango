@@ -27,4 +27,8 @@
 	  <PackageReference Include="Scalar.AspNetCore" Version="2.0.36" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Store.Abstractions\Store.Abstractions.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,8 +1,8 @@
-﻿using Mango.Services.AuthAPI.Entities;
+﻿using Store.Services.AuthAPI.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Mango.Services.AuthAPI.Persistence;
+namespace Store.Services.AuthAPI.Persistence;
 
 public class AppDbContext(
     DbContextOptions<AppDbContext> options

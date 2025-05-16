@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Mango.Services.AuthAPI.Entities;
+namespace Store.Services.AuthAPI.Entities;
 
 public class AppRole : IdentityRole
 {

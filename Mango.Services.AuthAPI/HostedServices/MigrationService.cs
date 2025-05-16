@@ -1,8 +1,8 @@
 ﻿
-using Mango.Services.AuthAPI.Persistence;
+using Store.Services.AuthAPI.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace Mango.Services.AuthAPI.HostedServices;
+namespace Store.Services.AuthAPI.HostedServices;
 
 public class MigrationService(IServiceProvider _serviceProvider) : IHostedService
 {

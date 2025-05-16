@@ -1,31 +1,31 @@
-﻿using Mango.Services.AuthAPI.Abstracts;
+﻿using Store.Abstractions.Abstraction;
 
-namespace Mango.Services.AuthAPI.Errors;
+namespace Store.Services.AuthAPI.Errors;
 
 
-public record UserErrors
+public record AuthErrors
 {
     public static readonly Error InvalidCredentials =
-        Error.Unauthorized("User.InvalidCredentials", "Invalid email/password");
+        Error.Unauthorized("Invalid email/password");
 
     public static readonly Error DisabledUser =
-        Error.Unauthorized("User.DisabledUser", "Disabled user. Please contact your administrator.");
+        Error.Unauthorized("Disabled user. Please contact your administrator.");
 
     public static readonly Error LockedUser =
-        Error.Locked("User.LockedUser", "Locked user. Please contact your administrator.");
+        Error.Locked("Locked user. Please contact your administrator.");
 
     public static readonly Error NotFound =
-        Error.NotFound("User.NotFound", "User not found.");
+        Error.NotFound("User not found.");
 
     public static readonly Error DuplicatedEmail =
-        Error.Conflict("User.DuplicatedEmail", "Another user with the same email already exists.");
+        Error.Conflict("Another user with the same email already exists.");
 
     public static readonly Error EmailIsNotConfirmed =
-        Error.Unauthorized("User.EmailIsNotConfirmed", "Email is not confirmed.");
+        Error.Unauthorized("Email is not confirmed.");
 
     public static readonly Error InvalidCode =
-        Error.BadRequest("User.InvalidCode", "Invalid code.");
+        Error.BadRequest("Invalid code.");
 
     public static readonly Error DuplicatedConfirmation =
-        Error.BadRequest("User.DuplicatedConfirmation", "Duplicated confirmation.");
+        Error.BadRequest("Duplicated confirmation.");
 }

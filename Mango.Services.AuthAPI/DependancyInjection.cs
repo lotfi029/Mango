@@ -1,11 +1,11 @@
 ﻿using Carter;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using Mango.Services.AuthAPI.Authentication;
-using Mango.Services.AuthAPI.Entities;
-using Mango.Services.AuthAPI.HostedServices;
-using Mango.Services.AuthAPI.Persistence;
-using Mango.Services.AuthAPI.Services;
+using Store.Services.AuthAPI.Authentication;
+using Store.Services.AuthAPI.Entities;
+using Store.Services.AuthAPI.HostedServices;
+using Store.Services.AuthAPI.Persistence;
+using Store.Services.AuthAPI.Services;
 using Mapster;
 using MapsterMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -16,9 +16,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 using System.Text;
-using Mango.Services.AuthAPI.Options;
+using Store.Services.AuthAPI.Options;
+using Store.Services.AuthAPI.Services;
 
-namespace Mango.Services.AuthAPI;
+namespace Store.Services.AuthAPI;
 
 public static class DependancyInjection
 {
@@ -70,6 +71,8 @@ public static class DependancyInjection
         services.AddSingleton<IJwtProvider, JwtProvider>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IRoleService, RoleService>();
+        services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IFileService, FileService>();
 
         services.AddIdentity<AppUser, AppRole>()
             .AddEntityFrameworkStores<AppDbContext>()
@@ -112,10 +115,10 @@ public static class DependancyInjection
         services.AddCors(options =>
         {
             options.AddPolicy("CorsPolicy",
-                builder => builder.AllowAnyOrigin()
+                builder => builder
+                    .AllowAnyOrigin()
                     .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowAnyOrigin());
+                    .AllowAnyHeader());
         });
 
         return services;

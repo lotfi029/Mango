@@ -1,15 +1,15 @@
-﻿using Mango.Services.AuthAPI.Abstracts;
+﻿using Store.Abstractions.Abstraction;
 
-namespace Mango.Services.AuthAPI.Errors;
+namespace Store.Services.AuthAPI.Errors;
 
 public static class RefreshTokenErrors
 {
     public static readonly Error InvalidToken =
-        Error.Unauthorized("Token.InvalidToken", "The token is expired or invalid.");
+        Error.Unauthorized("The token is expired or invalid.");
 
     public static readonly Error InvalidUserId =
-        Error.NotFound("Token.InvalidUserId", "No user exists with this id.");
+        Error.NotFound("No user exists with this id.");
 
     public static readonly Error NoRefreshToken =
-        Error.Unauthorized("Token.NoRefreshToken", "No refresh token provided.");
+        Error.Unauthorized("No refresh token provided.");
 }

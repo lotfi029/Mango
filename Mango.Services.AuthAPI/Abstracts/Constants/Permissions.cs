@@ -1,4 +1,4 @@
-﻿namespace Mango.Services.AuthAPI.Abstracts.Constants;
+﻿namespace Store.Services.AuthAPI.Abstracts.Constants;
 
 public static class Permissions
 {

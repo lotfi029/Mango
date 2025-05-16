@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Mango.Services.AuthAPI.Authentication;
+namespace Store.Services.AuthAPI.Authentication;
 
 public class JwtOptions
 {

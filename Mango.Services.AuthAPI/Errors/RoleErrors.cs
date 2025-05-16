@@ -1,16 +1,16 @@
-﻿using Mango.Services.AuthAPI.Abstracts;
+﻿using Store.Abstractions.Abstraction;
 
-namespace Mango.Services.AuthAPI.Errors;
+namespace Store.Services.AuthAPI.Errors;
 
 public class RoleErrors
 {
     public static readonly Error RoleNotFound =
-        Error.NotFound("Role.NotFound", "Role not found.");
+        Error.NotFound("Role not found.");
 
     public static readonly Error DuplicatedRole =
-        Error.Conflict("Role.DuplicatedRole", "This role already exists.");
+        Error.Conflict("This role already exists.");
 
     public static readonly Error InvalidPermission =
-        Error.BadRequest("Role.InvalidPermission", "The specified permission does not exist.");
+        Error.BadRequest("The specified permission does not exist.");
 
 }

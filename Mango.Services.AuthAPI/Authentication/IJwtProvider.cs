@@ -1,7 +1,7 @@
-﻿using Mango.Services.AuthAPI.Entities;
+﻿using Store.Services.AuthAPI.Entities;
 using Microsoft.AspNetCore.Identity;
 
-namespace Mango.Services.AuthAPI.Authentication;
+namespace Store.Services.AuthAPI.Authentication;
 
 public interface IJwtProvider
 {

@@ -1,4 +1,4 @@
-﻿namespace Mango.Services.AuthAPI.Abstracts;
+﻿namespace Store.Services.AuthAPI.Abstracts;
 
 public class EmailBodyBuilder
 {

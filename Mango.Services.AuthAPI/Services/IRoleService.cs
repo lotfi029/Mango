@@ -1,7 +1,8 @@
-﻿using Mango.Services.AuthAPI.Abstracts;
-using Mango.Services.AuthAPI.Contracts;
+﻿using Store.Abstractions.Abstraction;
+using Store.Services.AuthAPI.Abstracts;
+using Store.Services.AuthAPI.Contracts.Roles;
 
-namespace Mango.Services.AuthAPI.Services;
+namespace Store.Services.AuthAPI.Services;
 
 public interface IRoleService
 {

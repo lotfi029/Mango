@@ -3,9 +3,9 @@ using Microsoft.Extensions.Options;
 using MailKit.Net.Smtp;
 using MimeKit;
 using MailKit.Security;
-using Mango.Services.AuthAPI.Options;
+using Store.Services.AuthAPI.Options;
 
-namespace Mango.Services.AuthAPI.Services;
+namespace Store.Services.AuthAPI.Services;
 
 public class EmailService(IOptions<MailOptions> mailSetting) : IEmailSender
 {

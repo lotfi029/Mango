@@ -1,14 +1,15 @@
-﻿using Mango.Services.AuthAPI.Abstracts;
-using Mango.Services.AuthAPI.Abstracts.Constants;
-using Mango.Services.AuthAPI.Contracts;
-using Mango.Services.AuthAPI.Entities;
-using Mango.Services.AuthAPI.Errors;
-using Mango.Services.AuthAPI.Persistence;
+﻿using Store.Services.AuthAPI.Abstracts;
+using Store.Services.AuthAPI.Abstracts.Constants;
+using Store.Services.AuthAPI.Entities;
+using Store.Services.AuthAPI.Errors;
+using Store.Services.AuthAPI.Persistence;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Store.Services.AuthAPI.Contracts.Roles;
+using Store.Abstractions.Abstraction;
 
-namespace Mango.Services.AuthAPI.Services;
+namespace Store.Services.AuthAPI.Services;
 
 public class RoleService(
     RoleManager<AppRole> roleManager,
@@ -55,9 +56,9 @@ public class RoleService(
 
         if (!result.Succeeded)
         {
-            var error = result.Errors.First();
+            var error = result.Errors.First()!;
 
-            return Error.BadRequest(error.Code, error.Description);
+            return Error.BadRequest(error.Description);
         }
 
 
@@ -94,8 +95,8 @@ public class RoleService(
 
         if (!result.Succeeded)
         {
-            var error = result.Errors.First();
-            return Error.BadRequest(error.Code, error.Description);
+            var error = result.Errors.First()!;
+            return Error.BadRequest(error.Description);
         }
 
 

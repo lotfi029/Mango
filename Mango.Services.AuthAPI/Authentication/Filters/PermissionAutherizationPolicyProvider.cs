@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 
-namespace Mango.Services.AuthAPI.Authentication.Filters;
+namespace Store.Services.AuthAPI.Authentication.Filters;
 
 public class PermissionAutherizationPolicyProvider(IOptions<AuthorizationOptions> options) : DefaultAuthorizationPolicyProvider(options)
 {

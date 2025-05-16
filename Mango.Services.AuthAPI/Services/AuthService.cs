@@ -1,11 +1,10 @@
-﻿using Mango.Services.AuthAPI.Abstracts;
-using Mango.Services.AuthAPI.Abstracts.Constants;
-using Mango.Services.AuthAPI.Authentication;
-using Mango.Services.AuthAPI.Contracts;
-using Mango.Services.AuthAPI.Entities;
-using Mango.Services.AuthAPI.Errors;
-using Mango.Services.AuthAPI.Options;
-using Mango.Services.AuthAPI.Persistence;
+﻿using Store.Services.AuthAPI.Abstracts;
+using Store.Services.AuthAPI.Abstracts.Constants;
+using Store.Services.AuthAPI.Authentication;
+using Store.Services.AuthAPI.Entities;
+using Store.Services.AuthAPI.Errors;
+using Store.Services.AuthAPI.Options;
+using Store.Services.AuthAPI.Persistence;
 using Mapster;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Identity;
@@ -13,10 +12,12 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Store.Services.AuthAPI.Contracts.Auths;
 using System.Security.Cryptography;
 using System.Text;
+using Store.Abstractions.Abstraction;
 
-namespace Mango.Services.AuthAPI.Services;
+namespace Store.Services.AuthAPI.Services;
 
 public class AuthService(
     UserManager<AppUser> _userManager,
@@ -34,10 +35,10 @@ public class AuthService(
     public async Task<Result<AccessTokenResponse>> GetTokenAsync(LoginRequest request, CancellationToken cancellationToken = default)
     {
         if (await _userManager.FindByEmailAsync(request.Email) is not { } user)
-            return UserErrors.InvalidCredentials;
+            return AuthErrors.InvalidCredentials;
 
         if (user.IsDisable)
-            return UserErrors.DisabledUser;
+            return AuthErrors.DisabledUser;
 
         var result = await _signInManager.PasswordSignInAsync(user, request.Password, false, true);
 
@@ -45,10 +46,10 @@ public class AuthService(
         {
 
             return result.IsNotAllowed
-                ? UserErrors.EmailIsNotConfirmed
+                ? AuthErrors.EmailIsNotConfirmed
                 : result.IsLockedOut
-                ? UserErrors.LockedUser
-                : UserErrors.InvalidCredentials;
+                ? AuthErrors.LockedUser
+                : AuthErrors.InvalidCredentials;
         }
         var (roles, permission) = await GetUserRolesAndClaims(user, cancellationToken);
         var (token, expiresIn) = _jwtProvider.GenerateToken(user, roles, permission);
@@ -85,7 +86,7 @@ public class AuthService(
             return RefreshTokenErrors.InvalidUserId;
 
         if (user.IsDisable)
-            return UserErrors.DisabledUser;
+            return AuthErrors.DisabledUser;
 
         var userRefreshToken = user.RefreshTokens.SingleOrDefault(e => e.Token == request.RefreshToken && e.IsActive);
 
@@ -143,7 +144,7 @@ public class AuthService(
     public async Task<Result<ConfirmEmailRequest>> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken = default)
     {
         if (await _userManager.Users.AnyAsync(e => e.Email == request.Email, cancellationToken))
-            return UserErrors.DuplicatedEmail;
+            return AuthErrors.DuplicatedEmail;
 
 
         var user = request.Adapt<AppUser>();
@@ -152,7 +153,7 @@ public class AuthService(
         if (!createUserResult.Succeeded)
         {
             var error = createUserResult.Errors.First();
-            return Error.BadRequest(error!.Code, error.Description);
+            return Error.BadRequest(error.Description);
         }
 
         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -186,10 +187,10 @@ public class AuthService(
     {
 
         if (await _userManager.FindByIdAsync(request.UserId) is not { } user)
-            return UserErrors.InvalidCode;
+            return AuthErrors.InvalidCode;
 
         if (user.EmailConfirmed)
-            return UserErrors.DuplicatedConfirmation;
+            return AuthErrors.DuplicatedConfirmation;
 
         var code = request.Code;
         try
@@ -198,15 +199,15 @@ public class AuthService(
         }
         catch (FormatException)
         {
-            return UserErrors.InvalidCode;
+            return AuthErrors.InvalidCode;
         }
 
         var result = await _userManager.ConfirmEmailAsync(user, code);
 
         if (!result.Succeeded)
         {
-            var error = result.Errors.FirstOrDefault();
-            return Error.BadRequest(error!.Code, error.Description);
+            var error = result.Errors.FirstOrDefault()!;
+            return Error.BadRequest(error.Description);
         }
 
         await _userManager.AddToRoleAsync(user, DefaultRoles.UserName);
@@ -216,10 +217,10 @@ public class AuthService(
     {
 
         if (await _userManager.FindByEmailAsync(request.Email) is not { } user)
-            return UserErrors.NotFound;
+            return AuthErrors.NotFound;
 
         if (user.EmailConfirmed)
-            return UserErrors.DuplicatedConfirmation;
+            return AuthErrors.DuplicatedConfirmation;
 
         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -237,7 +238,7 @@ public class AuthService(
             return Result.Success(new ResetPasswordCodeResponse("", ""));
 
         if (!user.EmailConfirmed)
-            return UserErrors.EmailIsNotConfirmed;
+            return AuthErrors.EmailIsNotConfirmed;
 
         var code = await _userManager.GeneratePasswordResetTokenAsync(user);
 
@@ -252,7 +253,7 @@ public class AuthService(
     public async Task<Result> ResetPasswordAsync(ResetPasswordRequest request)
     {
         if (await _userManager.FindByEmailAsync(request.Email) is not { } user)
-            return UserErrors.InvalidCode;
+            return AuthErrors.InvalidCode;
 
         var code = request.ResetCode;
 
@@ -261,7 +262,7 @@ public class AuthService(
         {
             code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
             if (await _userManager.CheckPasswordAsync(user, request.NewPassword))
-                return Error.Conflict("User.InvalidPassword", "this password is used before Select another one.");
+                return Error.Conflict("this password is used before Select another one.");
             result = await _userManager.ResetPasswordAsync(user, code, request.NewPassword);
         }
         catch (FormatException)
@@ -271,8 +272,8 @@ public class AuthService(
 
         if (!result.Succeeded)
         {
-            var error = result.Errors.FirstOrDefault();
-            return Error.BadRequest(error!.Code, error.Description);
+            var error = result.Errors.FirstOrDefault()!;
+            return Error.BadRequest(error.Description);
         }
 
         return Result.Success();

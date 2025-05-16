@@ -1,5 +1,5 @@
 using Carter;
-using Mango.Services.AuthAPI;
+using Store.Services.AuthAPI;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);

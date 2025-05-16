@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Mango.Services.AuthAPI.Entities;
+namespace Store.Services.AuthAPI.Entities;
 
 [Owned]
 [Table("RefreshTokens")]

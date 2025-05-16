@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Mango.Services.AuthAPI.Contracts;
+namespace Store.Services.AuthAPI.Contracts.Auths;
 
 public class ResetPaswordRequestValidator : AbstractValidator<ResetPasswordRequest>
 {

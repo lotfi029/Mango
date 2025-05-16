@@ -2,13 +2,13 @@
 using Carter.ModelBinding;
 using FluentValidation;
 using FluentValidation.Results;
-using Mango.Services.AuthAPI.Abstracts;
-using Mango.Services.AuthAPI.Contracts;
-using Mango.Services.AuthAPI.Services;
+using Store.Services.AuthAPI.Abstracts;
+using Store.Services.AuthAPI.Services;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Mvc;
+using Store.Services.AuthAPI.Contracts.Auths;
 
-namespace Mango.Services.AuthAPI.Endpoints;
+namespace Store.Services.AuthAPI.Endpoints;
 
 public class AuthEndpoints : ICarterModule
 {
@@ -87,8 +87,8 @@ public class AuthEndpoints : ICarterModule
 
         var result = await authService.GetTokenAsync(request, ct);
 
-        return result.IsSucceed
-            ? TypedResults.Ok(result.Value)
+        return result.IsSuccess
+            ? TypedResults.Ok(result.Data)
             : result.ToProblem();
     }
 
@@ -105,8 +105,8 @@ public class AuthEndpoints : ICarterModule
         }
 
         var result = await authService.GetRefreshTokenAsync(request, ct);
-        return result.IsSucceed
-            ? TypedResults.Ok(result.Value)
+        return result.IsSuccess
+            ? TypedResults.Ok(result.Data)
             : result.ToProblem();
     }
 
@@ -123,7 +123,7 @@ public class AuthEndpoints : ICarterModule
         }
 
         var result = await authService.RevokeRefreshTokenAsync(request, ct);
-        return result.IsSucceed
+        return result.IsSuccess
             ? TypedResults.Ok()
             : result.ToProblem();
     }
@@ -141,8 +141,8 @@ public class AuthEndpoints : ICarterModule
         }
 
         var result = await authService.RegisterAsync(request, ct);
-        return result.IsSucceed
-            ? TypedResults.Ok(result.Value)
+        return result.IsSuccess
+            ? TypedResults.Ok(result.Data)
             : result.ToProblem();
     }
 
@@ -158,7 +158,7 @@ public class AuthEndpoints : ICarterModule
         }
 
         var result = await authService.ConfirmEmailAsync(request);
-        return result.IsSucceed
+        return result.IsSuccess
             ? TypedResults.Ok()
             : result.ToProblem();
     }
@@ -176,8 +176,8 @@ public class AuthEndpoints : ICarterModule
         }
 
         var result = await authService.ReConfirmAsync(request);
-        return result.IsSucceed
-            ? TypedResults.Ok(result.Value)
+        return result.IsSuccess
+            ? TypedResults.Ok(result.Data)
             : result.ToProblem();
     }
 
@@ -194,8 +194,8 @@ public class AuthEndpoints : ICarterModule
         }
 
         var result = await authService.SendResetPasswordCodeAsync(request);
-        return result.IsSucceed
-            ? TypedResults.Ok(result.Value)
+        return result.IsSuccess
+            ? TypedResults.Ok(result.Data)
             : result.ToProblem();
     }
 
@@ -212,7 +212,7 @@ public class AuthEndpoints : ICarterModule
         }
 
         var result = await authService.ResetPasswordAsync(request);
-        return result.IsSucceed
+        return result.IsSuccess
             ? TypedResults.Ok()
             : result.ToProblem();
     }

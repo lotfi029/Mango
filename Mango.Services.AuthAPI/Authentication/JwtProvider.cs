@@ -1,5 +1,5 @@
-﻿using Mango.Services.AuthAPI.Abstracts.Constants;
-using Mango.Services.AuthAPI.Entities;
+﻿using Store.Services.AuthAPI.Abstracts.Constants;
+using Store.Services.AuthAPI.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -8,7 +8,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 
-namespace Mango.Services.AuthAPI.Authentication;
+namespace Store.Services.AuthAPI.Authentication;
 
 public class JwtProvider(IOptions<JwtOptions> jwtOptions) : IJwtProvider
 {
