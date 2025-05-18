@@ -30,22 +30,19 @@ public class ProductEndpoints : ICarterModule
             .WithName(nameof(Add))
             .Produces<int>(StatusCodes.Status201Created)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
-            .ProducesValidationProblem()
-            .RequireAuthorization(DefaultRoles.Admin);
+            .ProducesValidationProblem();
 
         group.MapPut("/{id:int}", Update)
             .WithName(nameof(Update))
             .Produces(StatusCodes.Status204NoContent)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
-            .ProducesValidationProblem()
-            .RequireAuthorization(DefaultRoles.Admin);
+            .ProducesValidationProblem();
 
         group.MapDelete("/{id:int}", Delete)
             .WithName(nameof(Delete))
             .Produces(StatusCodes.Status204NoContent)
-            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
-            .RequireAuthorization(DefaultRoles.Admin);
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound);
     }
 
     private async Task<IResult> GetById(

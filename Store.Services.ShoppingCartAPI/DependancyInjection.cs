@@ -1,50 +1,33 @@
 ﻿using Carter;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using Store.Services.AuthAPI.Authentication;
-using Store.Services.AuthAPI.Entities;
-using Store.Services.AuthAPI.HostedServices;
-using Store.Services.AuthAPI.Persistence;
-using Store.Services.AuthAPI.Services;
 using Mapster;
 using MapsterMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity.UI.Services;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 using System.Text;
-using Store.Services.AuthAPI.Options;
+using Store.Services.ShoppingCartAPI.HostedServices;
+using Store.Services.ShoppingCartAPI.Presistence;
 
-namespace Store.Services.AuthAPI;
+namespace Store.Services.ShoppingCartAPI;
 
 public static class DependancyInjection
 {
-    public static IServiceCollection AddAuthServices(this IServiceCollection services, IConfigurationManager configuration)
+    public static IServiceCollection AddCartServices(this IServiceCollection services, IConfigurationManager configuration)
     {
         services.AddOpenApi();
         services.AddServices();
         services.AddCarter();
 
         services.AddAuthService(configuration);
-        services.InjectService(configuration);
-
+        
 
         services.AddDbServices(configuration);
         services.AddHostedService<MigrationService>();
-        return services;
-    }
-    private static IServiceCollection InjectService(this IServiceCollection services, IConfigurationManager configuration)
-    {
-        services.AddScoped<IEmailSender, EmailService>();
-        services.AddOptions<MailOptions>()
-            .BindConfiguration(MailOptions.SectionName)
-            .ValidateDataAnnotations()
-            .ValidateOnStart();
-
-
         return services;
     }
     private static IServiceCollection AddServices(this IServiceCollection services)
@@ -67,16 +50,6 @@ public static class DependancyInjection
     {
         services.AddAuthorization();
 
-        services.AddSingleton<IJwtProvider, JwtProvider>();
-        services.AddScoped<IAuthService, AuthService>();
-        services.AddScoped<IRoleService, RoleService>();
-        services.AddScoped<IUserService, UserService>();
-        services.AddScoped<IFileService, FileService>();
-
-        services.AddIdentity<AppUser, AppRole>()
-            .AddEntityFrameworkStores<AppDbContext>()
-            .AddDefaultTokenProviders();
-        
         services.AddOptions<JwtOptions>()
             .BindConfiguration(JwtOptions.SectionName)
             .ValidateDataAnnotations()
@@ -125,7 +98,7 @@ public static class DependancyInjection
 
     private static IServiceCollection AddDbServices(this IServiceCollection services, IConfigurationManager configuration)
     {
-        services.AddDbContext<AppDbContext>(options =>
+        services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
             );
         
