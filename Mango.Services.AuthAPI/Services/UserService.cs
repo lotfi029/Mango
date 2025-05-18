@@ -8,7 +8,11 @@ using Carter.Response;
 
 namespace Store.Services.AuthAPI.Services;
 
-public class UserService(AppDbContext _context, IFileService _fileService) : IUserService
+public class UserService(
+    AppDbContext _context, 
+    IFileService _fileService,
+    IHttpContextAccessor httpContextAccessor,
+    LinkGenerator linkGenerator) : IUserService
 {
 
     public async Task<Result> UpdateProfileAsync(string userId, UpdateUserRequest request, CancellationToken ct = default)
@@ -64,7 +68,22 @@ public class UserService(AppDbContext _context, IFileService _fileService) : IUs
         if (response is null)
             return UserErrors.UserNotFound;
 
-        return response;
+        var imageUrl = linkGenerator.GetUriByName(
+            httpContextAccessor.HttpContext!,
+            "GetImage",
+            new { imageName = response?.ImageUrl }
+            );
+
+        var result = new UserResponse(
+            response.Id,
+            response.FirstName,
+            response.LastName,
+            response.Email,
+            response.UserName,
+            response.CreateAt,
+            imageUrl);
+
+        return result;
     }
     
 

@@ -6,5 +6,6 @@ public record UserResponse(
     string LastName,
     string Email,
     string UserName,
-    DateTime CreateAt
+    DateTime CreateAt,
+    string? ImageUrl
     );
